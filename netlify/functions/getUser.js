@@ -47,22 +47,37 @@ export const handler = async (event) => {
     let data = await res.json();
 
     usedData = data.members.filter(({name}) => name === firstParamValue);
+    
     if(doubleQuery) {
         usedData = data.members.filter(({name, surname}) => name === firstParamValue || surname === secondParamValue);
+        return {
+            statusCode: 200,
+            headers: {
+              /* Required for CORS support to work */
+              'Access-Control-Allow-Origin': '*',
+              /* Required for cookies, authorization headers with HTTPS */
+              'Access-Control-Allow-Credentials': true
+            },
+            body: JSON.stringify({
+              data: usedData
+            })
+          }
     }
 
     return {
-      statusCode: 200,
-      headers: {
-        /* Required for CORS support to work */
-        'Access-Control-Allow-Origin': '*',
-        /* Required for cookies, authorization headers with HTTPS */
-        'Access-Control-Allow-Credentials': true
-      },
-      body: JSON.stringify({
-        data: usedData
-      })
-    }
+        statusCode: 200,
+        headers: {
+          /* Required for CORS support to work */
+          'Access-Control-Allow-Origin': '*',
+          /* Required for cookies, authorization headers with HTTPS */
+          'Access-Control-Allow-Credentials': true
+        },
+        body: JSON.stringify({
+          data: usedData
+        })
+      }
+
+    
   }
 
 
