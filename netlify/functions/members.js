@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export const handler = async () => {
+export const handler = async (event) => {
 
     let res = await fetch('https://whois.fdnd.nl/api/v1/members')
     let data = await res.json();
@@ -14,7 +14,7 @@ export const handler = async () => {
         'Access-Control-Allow-Credentials': true
       },
       body: JSON.stringify({
-        data: data
+        data: event
       })
     }
   }
