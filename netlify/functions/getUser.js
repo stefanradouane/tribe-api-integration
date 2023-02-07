@@ -56,14 +56,13 @@ export const handler = async (event) => {
             if(!queryObject[key]){
                 return
             } else {
-                errorMessage = queryObject
-                // errorMessage = { error: 400, reason: "The query type is not supported", fix: "Try a query like: name, surname, nickname" };
+                errorMessage = { status: 400, error: "This query is not supported", fix: "Try a query like: name, surname, nickname, id and slug" };
             }
             
         } else if (foundItem) {
             if(doubleQuery){
                 if (key == "nickname" || key == "id" || key == "slug") {
-                    errorMessage = { error: 400, reason: "This query type is not supported when using a double query type", fix: "Try a query with a double querytype like: ?name=YOURNAME&surname=YOURSURNAME" }
+                    errorMessage = { status: 400, error: "This query is not supported when using a double query type", fix: "Try a query with a double querytype like: ?name=YOURNAME&surname=YOURSURNAME" }
                 }     
             } 
         }
@@ -88,7 +87,7 @@ export const handler = async (event) => {
 
     
     if(doubleQuery) {
-        // Supports: Name and Surname;low
+        // Supports: Name in combination with Surname;
         const usedData = data.members.filter(({name, surname}) => lowerCase(name) === lowerCase(firstParamValue) && lowerCase(surname) === lowerCase(secondParamValue));
         return {
             statusCode: 200,
@@ -104,7 +103,7 @@ export const handler = async (event) => {
           }
     }
     
-    // Supports: Name / surname / nickname / id ;
+    // Supports: Name / surname / nickname / id / slug ;
     const usedData = data.members.filter(( item ) => lowerCase(item[firstQueryType]) === lowerCase(firstParamValue))
 
     return {
