@@ -57,7 +57,7 @@ export const handler = async (event) => {
         const foundItem = finder.find(item => item == key)
         if(!foundItem) {
             return {
-                statusCode: 200,
+                statusCode: 400,
                 headers: {
                   /* Required for CORS support to work */
                   'Access-Control-Allow-Origin': '*',
@@ -72,7 +72,7 @@ export const handler = async (event) => {
             if(doubleQuery){
                 if (key == "nickname") {
                 return {
-                    statusCode: 200,
+                    statusCode: 400,
                     headers: {
                       /* Required for CORS support to work */
                       'Access-Control-Allow-Origin': '*',
