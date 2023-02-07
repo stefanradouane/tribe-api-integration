@@ -1,10 +1,6 @@
 import fetch from 'node-fetch';
 
 export const handler = async (event) => {
-
-  // console.log(event)
-  // console.log(event.rawQuery)
-
   const APIbase: "https://whois.fdnd.nl/api/v1";
 
   const APIendpoints = {
