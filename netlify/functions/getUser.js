@@ -58,7 +58,7 @@ export const handler = async (event) => {
         if(!foundItem) {
             const errorMessage = { error: 400, reason: "The query type is not supported", fix: "Try a query like: name, surname, nickname" };
             return {
-                statusCode: 400,
+                statusCode: 200,
                 headers: {
                   /* Required for CORS support to work */
                   'Access-Control-Allow-Origin': '*',
@@ -74,7 +74,7 @@ export const handler = async (event) => {
                 if (key == "nickname") {
                     const errorMessage = { error: 400, reason: "This query type is not supported when using a double query type", fix: "Try a query with a double querytype like: ?name=YOURNAME&surname=YOURSURNAME" }
                 return {
-                    statusCode: 400,
+                    statusCode: 200,
                     headers: {
                       /* Required for CORS support to work */
                       'Access-Control-Allow-Origin': '*',
