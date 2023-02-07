@@ -3,7 +3,21 @@ import fetch from 'node-fetch';
 const finder = ["name", "surname"]
 
 export const handler = async (event) => {
-    const query = event.rawQuery;
+    const query = event.rawQuery == "" ? false : event.rawQuery ;
+    let firstRes = await fetch(`https://whois.fdnd.nl/api/v1/members?first=100`)
+    let secondRes = await fetch(`https://whois.fdnd.nl/api/v1/members?first=100&skip=100`)
+
+
+    let firstData = await firstRes.json();
+    let secondData = await secondRes.json();
+
+    let dataArray = firstData.members.concat(secondData.members)
+
+    let data = {
+        members: dataArray
+    }
+
+    if(query) {
     const doubleQuery = query.search("&") == -1 ? false : true // Boolean
     let queryObject;
     let firstParamValue;
@@ -41,22 +55,11 @@ export const handler = async (event) => {
         }
     })
     
-    let firstRes = await fetch(`https://whois.fdnd.nl/api/v1/members?first=100`)
-    let secondRes = await fetch(`https://whois.fdnd.nl/api/v1/members?first=100&skip=100`)
-
-
-    let firstData = await firstRes.json();
-    let secondData = await secondRes.json();
-
-    let dataArray = firstData.members.concat(secondData.members)
-
-    let data = {
-        members: dataArray
-    }
+    
 
     
     if(doubleQuery) {
-        const usedData = data.members.filter(({name, surname}) => name === capitalizeFirstLetter(firstParamValue) || surname === capitalizeFirstLetter(secondParamValue));
+        const usedData = data.members.filter(({name, surname}) => name === capitalizeFirstLetter(firstParamValue) && surname === capitalizeFirstLetter(secondParamValue));
         return {
             statusCode: 200,
             headers: {
@@ -83,6 +86,21 @@ export const handler = async (event) => {
         },
         body: JSON.stringify({
           data: usedData
+        })
+      }
+
+    }
+
+    return {
+        statusCode: 200,
+        headers: {
+          /* Required for CORS support to work */
+          'Access-Control-Allow-Origin': '*',
+          /* Required for cookies, authorization headers with HTTPS */
+          'Access-Control-Allow-Credentials': true
+        },
+        body: JSON.stringify({
+          data: data
         })
       }
 
