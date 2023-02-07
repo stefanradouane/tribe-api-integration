@@ -35,9 +35,19 @@ export const handler = async (event) => {
     Object.keys(queryObject).forEach(key => {
         const foundItem = finder.find(item => item == key)
         if(!foundItem) {
-          throw "query type name doens't match api field"
+            return {
+            statusCode: 400,
+            headers: {
+                /* Required for CORS support to work */
+                'Access-Control-Allow-Origin': '*',
+                /* Required for cookies, authorization headers with HTTPS */
+                'Access-Control-Allow-Credentials': true
+            },
+            body: JSON.stringify({
+                data: "query type name doens't match api field"
+            })
         }
-    })
+    }})
     
     let res = await fetch(`https://whois.fdnd.nl/api/v1/members?first=200`)
 
