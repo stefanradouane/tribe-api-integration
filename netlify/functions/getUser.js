@@ -49,7 +49,7 @@ export const handler = async (event) => {
     let filteredData = data.members.filter(({name}) => name === firstParamValue);
     usedData = filteredData;
     if(doubleQuery) {
-        usedData = filteredData.data.filter(({surname}) => surname === secondParamValue);
+        usedData = filteredData.filter(({surname}) => surname === secondParamValue);
     }
 
     return {
@@ -61,7 +61,7 @@ export const handler = async (event) => {
         'Access-Control-Allow-Credentials': true
       },
       body: JSON.stringify({
-        data: usedData
+        data: queryObject
       })
     }
   }
