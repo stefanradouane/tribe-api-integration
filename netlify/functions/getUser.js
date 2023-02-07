@@ -104,7 +104,7 @@ export const handler = async (event) => {
     }
     
     // Supports: Name / surname / nickname / id ;
-    const usedData = data.members.filter(( item ) => item[firstQueryType].toLowerCase() === lowerCase(firstParamValue))
+    const usedData = data.members.filter(( item ) => lowerCase(item[firstQueryType]) === lowerCase(firstParamValue))
 
     return {
         statusCode: 200,
@@ -139,5 +139,8 @@ export const handler = async (event) => {
 
 
 function lowerCase(string) {
+    if(!sting) {
+        return string
+    }
     return string.toLowerCase();
 }
