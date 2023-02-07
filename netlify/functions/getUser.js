@@ -89,7 +89,10 @@ export const handler = async (event) => {
     }
     
     // Supports: Name / slug / surname / nickname ;
-    const usedData = data.members.filter(( item ) => item[firstQueryType] === capitalizeFirstLetter(firstParamValue));
+    const usedData = data.members.filter(( item ) => {
+        const isSlug = item[firstQueryType] == "slug" ? true : false;
+        return isSlug ? firstParamValue : capitalizeFirstLetter(firstParamValue)
+    }
 
     return {
         statusCode: 200,
