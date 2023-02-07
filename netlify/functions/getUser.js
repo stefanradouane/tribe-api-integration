@@ -8,7 +8,6 @@ export const handler = async (event) => {
     let queryObject;
     let firstParamValue;
     let secondParamValue;
-    let usedData;
 
     if(doubleQuery) {
         const firstParam = query.slice(0, query.search("&"))
@@ -46,10 +45,9 @@ export const handler = async (event) => {
 
     let data = await res.json();
 
-    usedData = data.members.filter(({name}) => name === firstParamValue);
     
     if(doubleQuery) {
-        usedData = data.members.filter(({name, surname}) => name === firstParamValue || surname === secondParamValue);
+        const usedData = data.members.filter(({name, surname}) => name === firstParamValue || surname === secondParamValue);
         return {
             statusCode: 200,
             headers: {
@@ -63,6 +61,8 @@ export const handler = async (event) => {
             })
           }
     }
+    
+    const usedData = data.members.filter(({name}) => name === firstParamValue);
 
     return {
         statusCode: 200,
