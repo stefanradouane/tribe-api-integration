@@ -43,7 +43,7 @@ export const handler = async (event) => {
 
     let data = await res.json();
 
-    const filteredData = data.filter(({name}) => name === queryObject.name)
+    const filteredData = data.members.filter(({name}) => name === queryObject.name)
 
     return {
       statusCode: 200,
