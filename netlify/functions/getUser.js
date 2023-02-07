@@ -25,13 +25,13 @@ export const handler = async (event) => {
          }
 
         queryObject = {
-            [firstQueryType]: firstParamValue,
-            [secondQueryType]: secondParamValue,
+            [firstQueryType]: capitalizeFirstLetter(firstParamValue),
+            [secondQueryType]: capitalizeFirstLetter(secondParamValue),
         }
     } else if (!doubleQuery) {
         const firstQueryType = query.slice(0, query.search("="))
         firstParamValue = query.slice(-(query.length - query.search("=") - 1))
-        queryObject = {[firstQueryType]: firstParamValue}
+        queryObject = {[firstQueryType]: capitalizeFirstLetter(firstParamValue)}
     }
 
     Object.keys(queryObject).forEach(key => {
@@ -63,4 +63,9 @@ export const handler = async (event) => {
         data: filteredData
       })
     }
+  }
+
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
