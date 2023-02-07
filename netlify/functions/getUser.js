@@ -139,7 +139,7 @@ export const handler = async (event) => {
 
 
 function lowerCase(string) {
-    if(!sting) {
+    if(!string) {
         return string
     }
     return string.toLowerCase();
