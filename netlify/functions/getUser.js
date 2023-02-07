@@ -46,10 +46,9 @@ export const handler = async (event) => {
 
     let data = await res.json();
 
-    let filteredData = data.members.filter(({name}) => name === firstParamValue);
-    usedData = filteredData;
+    usedData = data.members.filter(({name}) => name === firstParamValue);
     if(doubleQuery) {
-        usedData = filteredData.filter(({surname}) => surname === secondParamValue);
+        usedData = data.members.filter(({name, surname}) => name === firstParamValue || surname === secondParamValue);
     }
 
     return {
