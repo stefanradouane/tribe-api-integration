@@ -25,13 +25,13 @@ export const handler = async (event) => {
          }
 
         queryObject = {
-            [firstQueryType]: capitalizeFirstLetter(firstParamValue),
-            [secondQueryType]: capitalizeFirstLetter(secondParamValue),
+            [firstQueryType]: firstParamValue,
+            [secondQueryType]: secondParamValue,
         }
     } else if (!doubleQuery) {
         const firstQueryType = query.slice(0, query.search("="))
         firstParamValue = query.slice(-(query.length - query.search("=") - 1))
-        queryObject = {[firstQueryType]: capitalizeFirstLetter(firstParamValue)}
+        queryObject = {[firstQueryType]: firstParamValue}
     }
 
     Object.keys(queryObject).forEach(key => {
@@ -47,7 +47,7 @@ export const handler = async (event) => {
 
     
     if(doubleQuery) {
-        const usedData = data.members.filter(({name, surname}) => name === firstParamValue || surname === secondParamValue);
+        const usedData = data.members.filter(({name, surname}) => name === capitalizeFirstLetter(firstParamValue) || surname === capitalizeFirstLetter(secondParamValue));
         return {
             statusCode: 200,
             headers: {
@@ -62,7 +62,7 @@ export const handler = async (event) => {
           }
     }
     
-    const usedData = data.members.filter(({name}) => name === firstParamValue);
+    const usedData = data.members.filter(({name}) => name === capitalizeFirstLetter(firstParamValue));
 
     return {
         statusCode: 200,
