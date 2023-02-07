@@ -90,7 +90,7 @@ export const handler = async (event) => {
     
     // Supports: Name / slug / surname / nickname ;
     const usedData = data.members.filter(( item ) => {
-        const isSlug = item[firstQueryType] == "slug" ? true : false;
+        const isSlug = item[firstQueryType] === "slug" ? true : false;
         return isSlug ? item[firstQueryType] === firstParamValue : item[firstQueryType] === capitalizeFirstLetter(firstParamValue);
     })
 
