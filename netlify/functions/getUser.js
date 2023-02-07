@@ -41,9 +41,18 @@ export const handler = async (event) => {
         }
     })
     
-    let res = await fetch(`https://whois.fdnd.nl/api/v1/members?first=200`)
+    let firstRes = await fetch(`https://whois.fdnd.nl/api/v1/members?first=100`)
+    let secondRes = await fetch(`https://whois.fdnd.nl/api/v1/members?first=100&skip=100`)
 
-    let data = await res.json();
+
+    let firstData = await firstRes.json();
+    let secondData = await secondRes.json();
+
+    let dataArray = firstData.members.concat(secondData.members)
+
+    let data = {
+        members: dataArray
+    }
 
     
     if(doubleQuery) {
