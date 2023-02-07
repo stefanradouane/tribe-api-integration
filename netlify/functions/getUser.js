@@ -8,6 +8,7 @@ export const handler = async (event) => {
     let queryObject;
     let firstParamValue;
     let secondParamValue;
+    let usedData;
 
     if(doubleQuery) {
         const firstParam = query.slice(0, query.search("&"))
@@ -45,8 +46,8 @@ export const handler = async (event) => {
 
     let data = await res.json();
 
-    const filteredData = data.members.filter(({name}) => name === firstParamValue);
-    let usedData = filteredData;
+    usedData = data.members.filter(({name}) => name === firstParamValue);
+
     if(doubleQuery) {
         usedData = filteredData.filter(({surname}) => surname === secondParamValue);
     }
@@ -60,7 +61,7 @@ export const handler = async (event) => {
         'Access-Control-Allow-Credentials': true
       },
       body: JSON.stringify({
-        data: queryObject
+        data: usedData
       })
     }
   }
