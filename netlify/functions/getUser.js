@@ -91,6 +91,9 @@ export const handler = async (event) => {
     // Supports: Name / slug / surname / nickname ;
     const usedData = data.members.filter(( item ) => {
         const isSlug = item[firstQueryType] === "slug" ? true : false;
+        console.log(isSlug)
+        console.log(item[firstQueryType] === firstParamValue)
+        console.log(item[firstQueryType] === capitalizeFirstLetter(firstParamValue))
         return isSlug ? item[firstQueryType] === firstParamValue : item[firstQueryType] === capitalizeFirstLetter(firstParamValue);
     })
 
@@ -103,7 +106,7 @@ export const handler = async (event) => {
           'Access-Control-Allow-Credentials': true
         },
         body: JSON.stringify({
-          data: queryObject
+          data: usedData
         })
       }
 
