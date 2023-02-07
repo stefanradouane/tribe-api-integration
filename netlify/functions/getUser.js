@@ -1,5 +1,7 @@
 import fetch from 'node-fetch';
 
+const finder = ["name", "surname", "slug", "nickname"]
+
 export const handler = async (event) => {
     const query = event.rawQuery;
     const doubleQuery = query.search("&") == -1 ? false : true // Boolean
@@ -12,7 +14,13 @@ export const handler = async (event) => {
 
         const secondParam = query.slice(-(query.length - query.search("&") - 1))
         const secondQueryType = secondParam.slice(0, secondParam.search("="))
-        const secondParamValue = secondParam.slice(-(secondParam.length - secondParam.search("=") - 1))
+        let secondParamValue = secondParam.slice(-(secondParam.length - secondParam.search("=") - 1))
+
+        if(secondParamValue.search("&") == -1) {
+            secondParamValue = secondParamValue
+         } else {
+            secondParamValue = secondParamValue.slice(0, secondParamValue.search("&"))
+         }
 
         queryObject = {
             [firstQueryType]: firstParamValue,
@@ -23,6 +31,13 @@ export const handler = async (event) => {
         const firstParamValue = query.slice(-(query.length - query.search("=") - 1))
         queryObject = {[firstQueryType]: firstParamValue}
     }
+
+    Object.keys(queryObject).forEach(key => {
+        const foundItem = finder.find(item => item == key)
+        if(!foundItem) {
+          throw "query type name doens't match api field"
+        }
+    })
     
     let res = await fetch(`https://whois.fdnd.nl/api/v1/members?first=200`)
 
