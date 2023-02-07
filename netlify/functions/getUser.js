@@ -56,6 +56,7 @@ export const handler = async (event) => {
     Object.keys(queryObject).forEach(key => {
         const foundItem = finder.find(item => item == key)
         if(!foundItem) {
+            const errorMessage = { error: 400, reason: "The query type is not supported", fix: "Try a query like: name, surname, nickname" };
             return {
                 statusCode: 400,
                 headers: {
@@ -65,12 +66,13 @@ export const handler = async (event) => {
                   'Access-Control-Allow-Credentials': true
                 },
                 body: JSON.stringify({
-                  data: { error: 400, reason: "The query type is not supported", fix: "Try a query like: 'name', 'surname', 'nickname'" }
+                  data: errorMessage
                 })
               }
         } else if (foundItem) {
             if(doubleQuery){
                 if (key == "nickname") {
+                    const errorMessage = { error: 400, reason: "This query type is not supported when using a double query type", fix: "Try a query with a double querytype like: ?name=YOURNAME&surname=YOURSURNAME" }
                 return {
                     statusCode: 400,
                     headers: {
@@ -80,7 +82,7 @@ export const handler = async (event) => {
                       'Access-Control-Allow-Credentials': true
                     },
                     body: JSON.stringify({
-                      data: { error: 400, reason: "This query type is not supported when using a double query type", fix: "Try a query with a double querytype like: '?name=YOURNAME&surname=YOURSURNAME'" }
+                      data: errorMessage
                     })
                   }
             }  
