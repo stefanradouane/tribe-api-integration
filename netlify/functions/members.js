@@ -2,8 +2,8 @@ import fetch from 'node-fetch';
 
 export const handler = async (event) => {
 
-    let parameters = JSON.parse(event.rawQuery);
-    let res = await fetch(`https://whois.fdnd.nl/api/v1/members${parameters}`)
+    let context = JSON.parse(event);
+    let res = await fetch(`https://whois.fdnd.nl/api/v1/members${context.rawQuery}`)
     let data = await res.json();
 
     return {
