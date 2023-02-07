@@ -66,6 +66,5 @@ export const handler = async (event) => {
   }
 
 
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+const capitalizeFirstLetter = ([ first, ...rest ], locale = navigator.language) =>
+  first === undefined ? '' : first.toLocaleUpperCase(locale) + rest.join('')
