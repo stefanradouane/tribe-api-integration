@@ -59,10 +59,12 @@ export const handler = async (event) => {
             // fix with proper error message
           throw "query type name doens't match api field";
         } else if (foundItem) {
-            if(doubleQuery && key == "slug" || key == "nickname") {
+            if(doubleQuery){
+                if (key == "slug" || key == "nickname") {
                 // fix with proper error message
                 throw "query type name doens't match api field";
-            }   
+            }  
+        } 
         }
     })
     
