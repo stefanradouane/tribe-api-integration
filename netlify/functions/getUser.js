@@ -49,7 +49,7 @@ export const handler = async (event) => {
     let filteredData = data.members.filter(({name}) => name === firstParamValue);
     usedData = filteredData;
     if(doubleQuery) {
-        usedData = filteredData.filter(({surname}) => surname === secondParamValue);
+        usedData = filteredData.data.filter(({surname}) => surname === secondParamValue);
     }
 
     return {
