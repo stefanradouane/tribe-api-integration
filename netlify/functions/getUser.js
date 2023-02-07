@@ -60,11 +60,12 @@ export const handler = async (event) => {
         'Access-Control-Allow-Credentials': true
       },
       body: JSON.stringify({
-        data: filteredData
+        data: queryObject
       })
     }
   }
 
 
-const capitalizeFirstLetter = ([ first, ...rest ], locale = navigator.language) =>
-  first === undefined ? '' : first.toLocaleUpperCase(locale) + rest.join('')
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
