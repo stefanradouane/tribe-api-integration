@@ -1,0 +1,22 @@
+{
+  "name": "tribe-api-integration",
+  "version": "1.0.0",
+  "description": "Experimenting with Netlify's Serverless Functions to connect the Tribe API to a FED.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roberrrt-s/tribe-api-integration.git"
+  },
+  "author": "Robert Spier",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roberrrt-s/tribe-api-integration/issues"
+  },
+  "homepage": "https://github.com/roberrrt-s/tribe-api-integration#readme",
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  }
+}
