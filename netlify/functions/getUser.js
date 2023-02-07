@@ -5,12 +5,12 @@ const finder = ["name", "surname"]
 export const handler = async (event) => {
     const query = event.rawQuery;
     const doubleQuery = query.search("&") == -1 ? false : true // Boolean
-    let queryObject;
+    let queryObjects, firstParamValue;
 
     if(doubleQuery) {
         const firstParam = query.slice(0, query.search("&"))
         const firstQueryType = firstParam.slice(0, firstParam.search("="))
-        const firstParamValue = firstParam.slice(-(firstParam.length - firstParam.search("=") - 1))
+        firstParamValue = firstParam.slice(-(firstParam.length - firstParam.search("=") - 1))
 
         const secondParam = query.slice(-(query.length - query.search("&") - 1))
         const secondQueryType = secondParam.slice(0, secondParam.search("="))
@@ -28,7 +28,7 @@ export const handler = async (event) => {
         }
     } else if (!doubleQuery) {
         const firstQueryType = query.slice(0, query.search("="))
-        const firstParamValue = query.slice(-(query.length - query.search("=") - 1))
+        firstParamValue = query.slice(-(query.length - query.search("=") - 1))
         queryObject = {[firstQueryType]: firstParamValue}
     }
 
