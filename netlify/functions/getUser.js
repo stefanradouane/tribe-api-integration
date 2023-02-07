@@ -60,7 +60,8 @@ export const handler = async (event) => {
             if(!queryObject[key]){
                 return
             } else {
-                errorMessage = { error: 400, reason: "The query type is not supported", fix: "Try a query like: name, surname, nickname" };
+                errorMessage = queryObject
+                // errorMessage = { error: 400, reason: "The query type is not supported", fix: "Try a query like: name, surname, nickname" };
             }
             
         } else if (foundItem) {
