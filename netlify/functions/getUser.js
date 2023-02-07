@@ -103,7 +103,7 @@ export const handler = async (event) => {
           'Access-Control-Allow-Credentials': true
         },
         body: JSON.stringify({
-          data: usedData
+          data: queryObject
         })
       }
 
