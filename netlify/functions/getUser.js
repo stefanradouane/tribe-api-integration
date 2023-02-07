@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const finder = ["name", "surname", "nickname"]
+const finder = ["name", "surname", "nickname", "id"]
 
 export const handler = async (event) => {
     const query = event.rawQuery == "" ? false : event.rawQuery ;
