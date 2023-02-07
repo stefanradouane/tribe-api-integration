@@ -19,7 +19,7 @@ export const handler = async (event) => {
 
     if(query) {
     const doubleQuery = query.search("&") == -1 ? false : true // Boolean
-    let queryObject;
+    let queryObject = {};
 
     let firstQueryType;
     let firstParamValue;
@@ -28,27 +28,23 @@ export const handler = async (event) => {
     let secondParamValue;
 
     if(doubleQuery) {
-        const firstParam = query.slice(0, query.search("&"))
-        firstQueryType = firstParam.slice(0, firstParam.search("="))
-        firstParamValue = firstParam.slice(-(firstParam.length - firstParam.search("=") - 1))
-
-        const secondParam = query.slice(-(query.length - query.search("&") - 1))
-        secondQueryType = secondParam.slice(0, secondParam.search("="))
-        secondParamValue = secondParam.slice(-(secondParam.length - secondParam.search("=") - 1))
-
-        if(secondParamValue.search("&") == -1) {
-            secondParamValue = secondParamValue
-         } else {
-            secondParamValue = secondParamValue.slice(0, secondParamValue.search("&"))
-         }
-
-        queryObject = {
-            [firstQueryType]: firstParamValue,
-            [secondQueryType]: secondParamValue,
-        }
+        const queryArray = query.split("&");
+    
+    if (queryArray.length >= 2) {    
+      const firstParam = queryArray[0].split("=");
+      const secondParam = queryArray[1].split("=");
+      firstQueryType = firstParam[0]
+      firstParamValue = firstParam[1]
+      secondQueryType = secondParam[0]
+      secondParamValue = secondParam[1]
+      
+      queryObject[firstQueryType] = firstParamValue;
+      queryObject[secondQueryType] = secondParamValue;
+     }
     } else if (!doubleQuery) {
-        firstQueryType = query.slice(0, query.search("="))
-        firstParamValue = query.slice(-(query.length - query.search("=") - 1))
+        const param = query.split("=");
+        firstQueryType = param[0]
+        firstParamValue = param[1]
         queryObject = {[firstQueryType]: firstParamValue}
     }
 
