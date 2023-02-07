@@ -57,7 +57,7 @@ export const handler = async (event) => {
     Object.keys(queryObject).forEach(key => {
         const foundItem = finder.find(item => item == key)
         if(!foundItem) {
-            if(!key){
+            if(!queryObject[key]){
                 return
             } else {
                 errorMessage = { error: 400, reason: "The query type is not supported", fix: "Try a query like: name, surname, nickname" };
