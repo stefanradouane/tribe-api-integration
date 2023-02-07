@@ -52,43 +52,36 @@ export const handler = async (event) => {
         queryObject = {[firstQueryType]: firstParamValue}
     }
 
+    let errorMessage;
     // Check if query is allowed
     Object.keys(queryObject).forEach(key => {
         const foundItem = finder.find(item => item == key)
         if(!foundItem) {
-            const errorMessage = { error: 400, reason: "The query type is not supported", fix: "Try a query like: name, surname, nickname" };
-            return {
-                statusCode: 200,
-                headers: {
-                  /* Required for CORS support to work */
-                  'Access-Control-Allow-Origin': '*',
-                  /* Required for cookies, authorization headers with HTTPS */
-                  'Access-Control-Allow-Credentials': true
-                },
-                body: JSON.stringify({
-                  data: errorMessage
-                })
-              }
+            errorMessage = { error: 400, reason: "The query type is not supported", fix: "Try a query like: name, surname, nickname" };
+            
         } else if (foundItem) {
             if(doubleQuery){
                 if (key == "nickname") {
-                    const errorMessage = { error: 400, reason: "This query type is not supported when using a double query type", fix: "Try a query with a double querytype like: ?name=YOURNAME&surname=YOURSURNAME" }
-                return {
-                    statusCode: 200,
-                    headers: {
-                      /* Required for CORS support to work */
-                      'Access-Control-Allow-Origin': '*',
-                      /* Required for cookies, authorization headers with HTTPS */
-                      'Access-Control-Allow-Credentials': true
-                    },
-                    body: JSON.stringify({
-                      data: errorMessage
-                    })
-                  }
-            }  
-        } 
+                    errorMessage = { error: 400, reason: "This query type is not supported when using a double query type", fix: "Try a query with a double querytype like: ?name=YOURNAME&surname=YOURSURNAME" }
+                }     
+            } 
         }
     })
+
+    if(errorMessage){
+        return {
+            statusCode: 200,
+            headers: {
+              /* Required for CORS support to work */
+              'Access-Control-Allow-Origin': '*',
+              /* Required for cookies, authorization headers with HTTPS */
+              'Access-Control-Allow-Credentials': true
+            },
+            body: JSON.stringify({
+              data: errorMessage
+            })
+        }
+    }
     
     
 
