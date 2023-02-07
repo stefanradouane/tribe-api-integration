@@ -13,6 +13,8 @@ export const handler = async () => {
         /* Required for cookies, authorization headers with HTTPS */
         'Access-Control-Allow-Credentials': true
       },
-      body: data
+      body: {
+        content: data
+      }
     }
   }
