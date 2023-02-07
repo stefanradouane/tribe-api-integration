@@ -5,7 +5,9 @@ const finder = ["name", "surname"]
 export const handler = async (event) => {
     const query = event.rawQuery;
     const doubleQuery = query.search("&") == -1 ? false : true // Boolean
-    let queryObjects, firstParamValue;
+    let queryObject;
+    let firstParamValue;
+    let secondParamValue;
 
     if(doubleQuery) {
         const firstParam = query.slice(0, query.search("&"))
@@ -14,7 +16,7 @@ export const handler = async (event) => {
 
         const secondParam = query.slice(-(query.length - query.search("&") - 1))
         const secondQueryType = secondParam.slice(0, secondParam.search("="))
-        let secondParamValue = secondParam.slice(-(secondParam.length - secondParam.search("=") - 1))
+        secondParamValue = secondParam.slice(-(secondParam.length - secondParam.search("=") - 1))
 
         if(secondParamValue.search("&") == -1) {
             secondParamValue = secondParamValue
@@ -43,7 +45,11 @@ export const handler = async (event) => {
 
     let data = await res.json();
 
-    const filteredData = data.members.filter(({name}) => name === firstParamValue)
+    const filteredData = data.members.filter(({name}) => name === firstParamValue);
+    let usedData = filteredData;
+    if(doubleQuery) {
+        usedData = filteredData.filter(({surname}) => surname === secondParamValue);
+    }
 
     return {
       statusCode: 200,
