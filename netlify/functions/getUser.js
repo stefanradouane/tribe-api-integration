@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const finder = ["name", "surname", "nickname", "id"]
+const finder = ["name", "surname", "nickname", "id", "slug"]
 
 export const handler = async (event) => {
     const query = event.rawQuery == "" ? false : event.rawQuery ;
@@ -61,7 +61,7 @@ export const handler = async (event) => {
             
         } else if (foundItem) {
             if(doubleQuery){
-                if (key == "nickname") {
+                if (key == "nickname" || key == "id" || key == "slug") {
                     errorMessage = { error: 400, reason: "This query type is not supported when using a double query type", fix: "Try a query with a double querytype like: ?name=YOURNAME&surname=YOURSURNAME" }
                 }     
             } 
@@ -70,7 +70,7 @@ export const handler = async (event) => {
 
     if(errorMessage){
         return {
-            statusCode: 200,
+            statusCode: 400,
             headers: {
               /* Required for CORS support to work */
               'Access-Control-Allow-Origin': '*',
@@ -87,8 +87,8 @@ export const handler = async (event) => {
 
     
     if(doubleQuery) {
-        // Supports: Name and Surname;
-        const usedData = data.members.filter(({name, surname}) => name === capitalizeFirstLetter(firstParamValue) && surname === capitalizeFirstLetter(secondParamValue));
+        // Supports: Name and Surname;low
+        const usedData = data.members.filter(({name, surname}) => lowerCase(name) === lowerCase(firstParamValue) && lowerCase(surname) === lowerCase(secondParamValue));
         return {
             statusCode: 200,
             headers: {
@@ -103,8 +103,8 @@ export const handler = async (event) => {
           }
     }
     
-    // Supports: Name / surname / nickname ;
-    const usedData = data.members.filter(( item ) => item[firstQueryType] === capitalizeFirstLetter(firstParamValue))
+    // Supports: Name / surname / nickname / id ;
+    const usedData = data.members.filter(( item ) => lowerCase(item[firstQueryType]) === lowerCase(firstParamValue))
 
     return {
         statusCode: 200,
@@ -138,6 +138,6 @@ export const handler = async (event) => {
   }
 
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+function lowerCase(string) {
+    return string.toLowerCase();
 }
