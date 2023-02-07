@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const finder = ["name", "surname", "slug", "nickname"]
+const finder = ["name", "surname", "nickname"]
 
 export const handler = async (event) => {
     const query = event.rawQuery == "" ? false : event.rawQuery ;
@@ -56,13 +56,33 @@ export const handler = async (event) => {
     Object.keys(queryObject).forEach(key => {
         const foundItem = finder.find(item => item == key)
         if(!foundItem) {
-            // fix with proper error message
-          throw "query type name doens't match api field";
+            return {
+                statusCode: 200,
+                headers: {
+                  /* Required for CORS support to work */
+                  'Access-Control-Allow-Origin': '*',
+                  /* Required for cookies, authorization headers with HTTPS */
+                  'Access-Control-Allow-Credentials': true
+                },
+                body: JSON.stringify({
+                  data: { error: 400, reason: "The query type is not supported", fix: "Try a query like: 'name', 'surname', 'nickname'" }
+                })
+              }
         } else if (foundItem) {
             if(doubleQuery){
-                if (key == "slug" || key == "nickname") {
-                // fix with proper error message
-                throw "query type name doens't match api field";
+                if (key == "nickname") {
+                return {
+                    statusCode: 200,
+                    headers: {
+                      /* Required for CORS support to work */
+                      'Access-Control-Allow-Origin': '*',
+                      /* Required for cookies, authorization headers with HTTPS */
+                      'Access-Control-Allow-Credentials': true
+                    },
+                    body: JSON.stringify({
+                      data: { error: 400, reason: "This query type is not supported when using a double query type", fix: "Try a query with a double querytype like: '?name=YOURNAME&surname=YOURSURNAME'" }
+                    })
+                  }
             }  
         } 
         }
@@ -88,14 +108,8 @@ export const handler = async (event) => {
           }
     }
     
-    // Supports: Name / slug / surname / nickname ;
-    const usedData = data.members.filter(( item ) => {
-        const isSlug = item[firstQueryType] === "slug" ? true : false;
-        console.log(isSlug)
-        console.log(item[firstQueryType] === firstParamValue)
-        console.log(item[firstQueryType] === capitalizeFirstLetter(firstParamValue))
-        return isSlug ? item[firstQueryType] === firstParamValue : item[firstQueryType] === capitalizeFirstLetter(firstParamValue);
-    })
+    // Supports: Name / surname / nickname ;
+    const usedData = data.members.filter(( item ) => item[firstQueryType] === capitalizeFirstLetter(firstParamValue))
 
     return {
         statusCode: 200,
