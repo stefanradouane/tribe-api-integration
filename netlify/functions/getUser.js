@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const finder = ["name", "surname", "slug", "nickname"]
+const finder = ["name", "surname"]
 
 export const handler = async (event) => {
     const query = event.rawQuery;
@@ -35,23 +35,15 @@ export const handler = async (event) => {
     Object.keys(queryObject).forEach(key => {
         const foundItem = finder.find(item => item == key)
         if(!foundItem) {
-            return {
-            statusCode: 400,
-            headers: {
-                /* Required for CORS support to work */
-                'Access-Control-Allow-Origin': '*',
-                /* Required for cookies, authorization headers with HTTPS */
-                'Access-Control-Allow-Credentials': true
-            },
-            body: JSON.stringify({
-                data: "query type name doens't match api field"
-            })
+          throw "query type name doens't match api field";
         }
-    }})
+    })
     
     let res = await fetch(`https://whois.fdnd.nl/api/v1/members?first=200`)
 
     let data = await res.json();
+
+    const filteredData = data.filter(({name}) => name === queryObject.name)
 
     return {
       statusCode: 200,
@@ -62,7 +54,7 @@ export const handler = async (event) => {
         'Access-Control-Allow-Credentials': true
       },
       body: JSON.stringify({
-        data: queryObject
+        data: filteredData
       })
     }
   }
