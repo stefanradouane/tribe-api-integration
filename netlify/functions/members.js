@@ -14,7 +14,7 @@ export const handler = async () => {
         'Access-Control-Allow-Credentials': true
       },
       body: {
-        content: data
+        data: 'Test'
       }
     }
   }
